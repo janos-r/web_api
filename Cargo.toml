@@ -1,0 +1,15 @@
+[package]
+name = "web_api"
+version = "0.1.0"
+authors = ["Radim <radim.janos@apitree.cz>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+juniper = "0.14.1"
+juniper_iron = "0.6.1"
+iron = "0.6.1"
+logger = "0.4.0"
+mount = "0.4.0"
+serde = "1.0.102"
