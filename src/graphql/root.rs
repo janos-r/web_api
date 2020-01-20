@@ -1,5 +1,8 @@
+use bson::{bson, doc, oid::ObjectId};
 use iron::prelude::*;
 use juniper::Context;
+use mongodb::{Client, Database};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /*
@@ -18,24 +21,26 @@ impl User {...}
 Metody implementace pak jsou jako resolvery pro ten daný typ. Jeho zdroj dat je jeho skutečný struct.
 */
 
-pub struct Komodita;
-#[juniper::object(Context = ContextDB)]
-impl Komodita {
-    fn elektrika() -> &'static str {
-        "plyn string"
-    }
-    fn plyn() -> &'static str {
-        "elektrika string"
-    }
-}
-
 /// The root query object of the schema
 pub struct Query;
 #[juniper::object(Context = ContextDB)]
 impl Query {
-    fn all_users(database: &ContextDB) -> Vec<&User> {
-        database.users.iter().map(|(key, user)| user).collect()
+    fn all_test(ctx: &ContextDB) -> Vec<Test> {
+        ctx.db
+            .collection("test")
+            .find(None, None)
+            .expect("all_test failed to get cursor")
+            .map(|result| {
+                let doc = result.expect("doc not found");
+                bson::from_bson(bson::Bson::Document(doc)).expect("bson: couldn't convert")
+            })
+            .collect()
     }
+
+    fn all_users(ctx: &ContextDB) -> Vec<&User> {
+        ctx.users.iter().map(|(key, user)| user).collect()
+    }
+
     fn komodita() -> Komodita {
         Komodita
     }
@@ -44,7 +49,12 @@ impl Query {
 // ## Context:
 
 pub fn context_factory(_: &mut Request) -> IronResult<ContextDB> {
+    let client =
+        Client::with_uri_str("mongodb://localhost:27017/").expect("Couldn't connect to the DB");
+    let db = client.database("local");
+
     Ok(ContextDB {
+        db,
         users: vec![
             (
                 1000,
@@ -69,9 +79,11 @@ pub fn context_factory(_: &mut Request) -> IronResult<ContextDB> {
 }
 
 pub struct ContextDB {
+    db: Database,
     users: HashMap<i32, User>,
 }
 impl Context for ContextDB {}
+
 struct User {
     id: i32,
     name: String,
@@ -103,3 +115,39 @@ impl User {
         self.id
     }
 }
+
+struct Komodita;
+#[juniper::object(Context = ContextDB)]
+impl Komodita {
+    fn elektrika() -> &'static str {
+        "plyn string"
+    }
+    fn plyn() -> &'static str {
+        "elektrika string"
+    }
+}
+
+// DB collection test
+#[derive(Serialize, Deserialize, Debug)]
+struct Test {
+    #[serde(rename = "_id")]
+    id: ObjectId,
+    name: String,
+}
+#[juniper::object]
+impl Test {
+    fn id(&self) -> String {
+        self.id.to_hex()
+    }
+    fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+/*
+NOTE:
+kdyby nebylo zapotřebí používat ID, tak by stačil vracet jen DB model struct s #[derive(juniper::GraphQLObject)]
+
+TODO:
+rozdělit soubor lépe to dalších souborů / složek
+*/

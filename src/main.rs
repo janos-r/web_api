@@ -1,11 +1,13 @@
+// #[macro_use(bson, doc)]
+extern crate bson;
 extern crate iron;
 extern crate juniper;
 extern crate juniper_iron;
 extern crate logger;
+extern crate mongodb;
 extern crate mount;
 extern crate serde;
 
-mod graphql;
 use graphql::root::*;
 use iron::prelude::*;
 use juniper::EmptyMutation;
@@ -13,6 +15,8 @@ use juniper_iron::{GraphQLHandler, PlaygroundHandler};
 use logger::Logger;
 use mount::Mount;
 use std::env;
+
+mod graphql;
 
 fn main() {
     let mut mount = Mount::new();
