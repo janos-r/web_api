@@ -8,7 +8,6 @@ extern crate mongodb;
 extern crate mount;
 extern crate serde;
 
-use graphql::root::*;
 use iron::prelude::*;
 use juniper::EmptyMutation;
 use juniper_iron::{GraphQLHandler, PlaygroundHandler};
@@ -16,15 +15,21 @@ use logger::Logger;
 use mount::Mount;
 use std::env;
 
-mod graphql;
+mod model;
+mod test;
+mod user;
+use model::{
+    context::{context_factory, ContextDB},
+    root::Query,
+};
 
 fn main() {
     let mut mount = Mount::new();
 
     let graphql_endpoint =
         GraphQLHandler::new(context_factory, Query, EmptyMutation::<ContextDB>::new());
-    let graphiql_endpoint = PlaygroundHandler::new("/graphql");
-    mount.mount("/", graphiql_endpoint);
+    let playground_endpoint = PlaygroundHandler::new("/graphql");
+    mount.mount("/", playground_endpoint);
     mount.mount("/graphql", graphql_endpoint);
 
     let (logger_before, logger_after) = Logger::new(None);
