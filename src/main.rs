@@ -15,8 +15,8 @@ use logger::Logger;
 use mount::Mount;
 use std::env;
 
+mod cats;
 mod model;
-mod test;
 mod user;
 use model::{
     context::{context_factory, ContextDB},

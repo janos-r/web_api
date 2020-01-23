@@ -1,6 +1,6 @@
 use super::context::ContextDB;
-use crate::test::service::TestService;
-use crate::user::model::{Komodita, User};
+use crate::cats::cat_service::CatService;
+use crate::user::user_service::UserService;
 
 /// The root query object of the schema
 pub struct Query;
@@ -10,15 +10,11 @@ impl Query {
         "1.0.0"
     }
 
-    fn test() -> TestService {
-        TestService
+    fn cats() -> CatService {
+        CatService
     }
 
-    fn all_users(ctx: &ContextDB) -> Vec<&User> {
-        ctx.users.iter().map(|(key, user)| user).collect()
-    }
-
-    fn komodita() -> Komodita {
-        Komodita
+    fn users() -> UserService {
+        UserService
     }
 }

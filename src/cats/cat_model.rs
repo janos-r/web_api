@@ -5,13 +5,13 @@ use bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Test {
+pub struct Cat {
     #[serde(rename = "_id")]
     id: ObjectId,
     name: String,
 }
 #[juniper::object]
-impl Test {
+impl Cat {
     fn id(&self) -> String {
         self.id.to_hex()
     }

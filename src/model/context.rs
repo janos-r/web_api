@@ -5,7 +5,7 @@ use juniper::Context;
 use mongodb::{Client, Database};
 use std::collections::HashMap;
 
-use crate::user::model::User;
+use crate::user::user_model::User;
 
 pub fn context_factory(_: &mut Request) -> IronResult<ContextDB> {
     let client =
