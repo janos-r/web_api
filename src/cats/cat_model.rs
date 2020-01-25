@@ -1,8 +1,7 @@
-// DB collection test
-
 use bson::oid::ObjectId;
-// use bson::{bson, doc};
 use serde::{Deserialize, Serialize};
+
+pub const CATS_COLLECTION: &str = "cats";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Cat {

@@ -1,14 +1,12 @@
-use super::cat_model::Cat;
+use super::cat_model::{Cat, CATS_COLLECTION};
 use crate::model::context::ContextDB;
 
-const COLLECTION: &str = "cats";
-
-pub struct CatService;
+pub struct CatQuery;
 #[juniper::object(Context = ContextDB)]
-impl CatService {
+impl CatQuery {
     fn list_all(ctx: &ContextDB) -> Vec<Cat> {
         ctx.db
-            .collection(COLLECTION)
+            .collection(CATS_COLLECTION)
             .find(None, None)
             .expect("all_test failed to get cursor")
             .map(|result| {
@@ -18,10 +16,3 @@ impl CatService {
             .collect()
     }
 }
-
-/*
-TODO:
-cat mutation
-try new fs logic
-https://doc.rust-lang.org/reference/items/modules.html
- */
