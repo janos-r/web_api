@@ -4,6 +4,7 @@ use bson::{bson, doc, to_bson};
 use serde::{Deserialize, Serialize};
 
 pub struct CatMutation;
+
 #[juniper::object(Context = ContextDB)]
 impl CatMutation {
     fn create(ctx: &ContextDB, input: CatInput) -> String {
@@ -36,11 +37,3 @@ impl CatMutation {
 struct CatInput {
     name: String,
 }
-
-/*
-TODO:
-add graphql descriptions
-add documentation ///
-try new fs logic
-https://doc.rust-lang.org/reference/items/modules.html
- */

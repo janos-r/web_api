@@ -1,4 +1,4 @@
-use super::user_model::{Komodita, User};
+use super::user_model::{Metal, User};
 use crate::model::context::ContextDB;
 
 pub struct UserService;
@@ -8,7 +8,7 @@ impl UserService {
         ctx.users.iter().map(|(key, user)| user).collect()
     }
 
-    fn komodita() -> Komodita {
-        Komodita
+    fn Metal() -> Metal {
+        Metal
     }
 }
