@@ -10,8 +10,8 @@ pub struct Cat {
     name: String,
 }
 
+/// An example type that can also show the '_id' as 'id'
 #[juniper::object]
-#[graphql(description = "An example type that can also show the _id as 'id'")]
 impl Cat {
     fn id(&self) -> String {
         self.id.to_hex()

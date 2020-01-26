@@ -32,8 +32,8 @@ impl CatMutation {
     }
 }
 
+/// The input object for creating a Cat
 #[derive(juniper::GraphQLInputObject, Serialize, Deserialize, Debug)]
-#[graphql(description = "The input object for creating a Cat")]
 struct CatInput {
     name: String,
 }

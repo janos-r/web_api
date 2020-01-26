@@ -7,11 +7,9 @@ pub struct User {
     pub friend_ids: Vec<i32>,
 }
 
-// Assign Database as the context type for User
+/// This is a gql schema description: An example type that can use the context again, after it was first provided with its struct User data from list_all in the UserService type
+// Assign ContextDB as the context type for User
 #[juniper::object(Context = ContextDB)]
-#[graphql(
-    description = "An example type that can use the context again, after it was first provided with its struct User data from list_all in the UserService"
-)]
 impl User {
     fn id(&self) -> i32 {
         self.id
@@ -25,14 +23,14 @@ impl User {
     // Note:
     //   - the type must be a reference
     //   - the name of the argument SHOULD be context (though I use ctx here :P)
+    /// Here we see that type User can return again a Vec<&User>, so you could cycle these infinitely in the gql request.
     fn friends(&self, ctx: &ContextDB) -> Vec<&User> {
-        // Use the database to lookup users
+        // Use the database to lookup users (again)
         self.friend_ids
             .iter()
             .map(|id| ctx.users.get(id).expect("Could not find user with ID"))
             .collect()
     }
-    // Here we see that impl User can return again a Vec<&User>, so in the gql request you could cycle these infinitely.
 }
 
 pub struct Metal;
