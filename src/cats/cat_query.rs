@@ -5,6 +5,7 @@ pub struct CatQuery;
 
 #[juniper::object(Context = ContextDB)]
 impl CatQuery {
+    /// List all Cats. Here you could return either Vec<Cat> or Vec<SipleCat> from the model.
     fn list_all(ctx: &ContextDB) -> Vec<Cat> {
         ctx.db
             .collection(CATS_COLLECTION)

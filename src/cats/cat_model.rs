@@ -20,3 +20,9 @@ impl Cat {
         &self.name
     }
 }
+
+/// An example type without the 'id', but doesn't need it's own impl resolvers. They are derived by Juniper.
+#[derive(juniper::GraphQLObject, Serialize, Deserialize, Debug)]
+pub struct SimpleCat {
+    name: String,
+}
