@@ -41,7 +41,7 @@ struct User {...}
 
 This is the easiest way - derives the whole schema from the struct. No impl necessary.
 
-Note: The mongo \_id field must (probably) have the type "ObjectId", which GraphQLObject can't resolve automatically. So as far as I know for now, this method can be used only if you don't need the id field. You can simply omit it in the struct, so after mongodb provides the data including the \_id, it will not be part of the deserialize and smply skipped.
+Note: The mongo \_id field must (probably) have the type "ObjectId", which GraphQLObject can't resolve automatically. So as far as I know for now, this method can be used only if you don't need the id field. You can simply omit it in the struct, so after mongodb provides the data including the \_id, it will not be part of the deserialize and smply skipped (viz "SimpleCat").
 
 B:
 custom types
