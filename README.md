@@ -24,6 +24,16 @@ TODO: make an .env variable
 
 You can access the api in the playground on <localhost:8080>. Even if you don't set up any collections, the "user" branch of the api uses a hardcoded hashMap in the context and can be viewed immediately in the playground after running this code. Mongo has to be running though, or the connection thread panics.
 
+### .env variables:
+
+The variables are loaded from the `.env` file. So far you can set there:
+
+-   `LISTEN` (default "0.0.0.0:8080"),
+-   `GRAPHQL_PATH` (default: "/graphql"),
+-   `PLAYGROUND_PATH` (default: "/")
+
+These paths have to be unique! Putting graphql and PlayGround on the same path won't work.
+
 ### To run:
 
 Just `cargo run`. If you don't have cargo, you can get it with rustup.rs

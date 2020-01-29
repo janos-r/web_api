@@ -1,8 +1,7 @@
 /*
 TODO:
-.env variable
-try new fs logic
-https://doc.rust-lang.org/reference/items/modules.html
+try new fs logic https://doc.rust-lang.org/reference/items/modules.html
+add logs
 */
 
 /*!
@@ -38,6 +37,7 @@ Because this would normally not be legal rust code. This fn should return an obj
 */
 
 extern crate bson;
+extern crate dotenv;
 extern crate iron;
 extern crate juniper;
 extern crate juniper_iron;
@@ -61,12 +61,19 @@ use model::{
 };
 
 fn main() {
+    // join environment from .env
+    if let Err(e) = dotenv::dotenv() {
+        println!("Error: Coulnd't load the .env file error: {:?}", e)
+    };
+
     let mut mount = Mount::new();
 
+    let playground_path = env::var("PLAYGROUND_PATH").unwrap_or_else(|_| "/".to_owned());
+    let graphql_path = env::var("GRAPHQL_PATH").unwrap_or_else(|_| "/graphql".to_owned());
+    let playground_endpoint = PlaygroundHandler::new(&graphql_path);
     let graphql_endpoint = GraphQLHandler::new(context_factory, Query, Mutation);
-    let playground_endpoint = PlaygroundHandler::new("/graphql");
-    mount.mount("/", playground_endpoint);
-    mount.mount("/graphql", graphql_endpoint);
+    mount.mount(&playground_path, playground_endpoint);
+    mount.mount(&graphql_path, graphql_endpoint);
 
     let (logger_before, logger_after) = Logger::new(None);
 
@@ -76,5 +83,5 @@ fn main() {
 
     let host = env::var("LISTEN").unwrap_or_else(|_| "0.0.0.0:8080".to_owned());
     println!("GraphQL server started on {}", host);
-    Iron::new(chain).http(host.as_str()).unwrap();
+    Iron::new(chain).http(&host).unwrap();
 }
