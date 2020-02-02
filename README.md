@@ -18,7 +18,6 @@ It represents your collections as folders and shows examples how a mongo modedel
 ### Database:
 
 The db connection is in the context. It connects by default to **localhost:27017**\
-TODO: make an .env variable
 
 ### Graphql:
 
