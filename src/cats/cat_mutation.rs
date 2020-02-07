@@ -1,34 +1,33 @@
 use super::cat_model::CATS_COLLECTION;
 use crate::model::context::ContextDB;
 use bson::{bson, doc, to_bson};
+use juniper::FieldResult;
 use serde::{Deserialize, Serialize};
 
 pub struct CatMutation;
 
 #[juniper::object(Context = ContextDB)]
 impl CatMutation {
-    fn create(ctx: &ContextDB, input: CatInput) -> String {
-        let doc = to_bson(&input)
-            .expect("couldn't convert to bson")
+    fn create(ctx: &ContextDB, input: CatInput) -> FieldResult<String> {
+        let doc = to_bson(&input)?
             .as_document()
-            .expect("bson: couldn't convert to document")
+            .ok_or("bson: couldn't convert to document")?
             .clone();
-        ctx.db
+        Ok(ctx
+            .db
             .collection(CATS_COLLECTION)
-            .insert_one(doc, None)
-            .expect("couldn't create doc")
+            .insert_one(doc, None)?
             .inserted_id
             .as_object_id()
-            .expect("couldn't turn id to objectId")
-            .to_hex()
+            .ok_or("created successfully, but can't display ID")?
+            .to_hex())
     }
 
-    fn create_simple(ctx: &ContextDB, name: String) -> String {
+    fn create_simple(ctx: &ContextDB, name: String) -> FieldResult<String> {
         ctx.db
             .collection(CATS_COLLECTION)
-            .insert_one(doc! {"name": name.clone()}, None)
-            .expect("couldn't create doc");
-        name
+            .insert_one(doc! {"name": name.clone()}, None)?;
+        Ok(name)
     }
 }
 
