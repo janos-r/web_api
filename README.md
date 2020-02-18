@@ -6,36 +6,40 @@ An attempt to create a web api with my favorite technologies:
 -   graphql
 -   mongodb
 
-## Crates used:
+## Main crates:
 
--   server: Iron
--   graphql: Juniper
--   mongodb: MongoDB
+-   server: [Iron](https://crates.io/crates/iron)
+-   graphql: [Juniper](https://crates.io/crates/juniper)
+-   mongodb: [MongoDB](https://crates.io/crates/mongodb)
 
 This project is just an api skeleton.
 It represents your collections as folders and shows examples how a mongo modedel is build with struct and the following graphql schema as its methods.
 
 ### Database:
 
-The db connection is in the context. It connects by default to **localhost:27017**\
+The db connection is in the context. It connects by default to `localhost:27017` and the database `local`.
 
 ### Graphql:
 
-You can access the api in the playground on <localhost:8080>. Even if you don't set up any collections, the "user" branch of the api uses a hardcoded hashMap in the context and can be viewed immediately in the playground after running this code. Mongo has to be running though, or the connection thread panics.
+You can access the api in the playground on <localhost:8080>. Even if you don't set up any collections, the "user" branch of the api uses a hard coded hashMap in the context and can be viewed immediately in the playground after running this code. Mongo has to be running though, or the connection thread panics.
 
 ### .env variables:
 
+So far, the project is set up so that the `.env` file is absolutely optional. All the necessary path variables have a hard coded default, that can be overwritten by the environment variable.
 The variables are loaded from the `.env` file. So far you can set there:
 
--   `LISTEN` (default "0.0.0.0:8080"),
--   `GRAPHQL_PATH` (default: "/graphql"),
--   `PLAYGROUND_PATH` (default: "/")
+-   `LISTEN` - default: "0.0.0.0:8080"
+-   `GRAPHQL_PATH` - default: "/graphql"
+-   `PLAYGROUND_PATH` - default: "/"
+-   `RUST_LOG` - default: none, info bellow
 
 These paths have to be unique! Putting graphql and PlayGround on the same path won't work.
 
 ### To run:
 
 Just `cargo run`. If you don't have cargo, you can get it with rustup.rs
+
+To run with the [logs](https://crates.io/crates/env_logger) add `RUST_LOG=info` or `RUST_LOG=debug` to the `.env` file, or one-time overwrite the `.env` while calling the program: `RUST_LOG=info cargo run` in bash for example.
 
 ## Basic documentation to the code
 

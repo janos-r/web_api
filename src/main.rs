@@ -1,7 +1,7 @@
 /*
-TODO:
-add logs
-*/
+todo:
+add info logs to all major places
+ */
 
 /*!
 There are two ways how to create a graphql schema in juniper.
@@ -35,18 +35,9 @@ fn cats() -> CatQuery {
 Because this would normally not be legal rust code. This fn should return an object of type CatQuery, but it is written as if it returns just the type plain. The juniper::object micro makes this probably work somehow and thanks to this, we can create the graphql schema very nicely.
 */
 
-extern crate bson;
-extern crate dotenv;
-extern crate iron;
-extern crate juniper;
-extern crate juniper_iron;
-extern crate logger;
-extern crate mongodb;
-extern crate mount;
-extern crate serde;
-
 use iron::prelude::*;
 use juniper_iron::{GraphQLHandler, PlaygroundHandler};
+use log::info;
 use logger::Logger;
 use mount::Mount;
 use std::env;
@@ -64,6 +55,10 @@ fn main() {
     if let Err(e) = dotenv::dotenv() {
         println!("Error: Coulnd't load the .env file error: {:?}", e)
     };
+
+    // initialize the logger after loading the .env file
+    env_logger::init();
+    info!("starting up");
 
     let mut mount = Mount::new();
 
