@@ -9,6 +9,7 @@ pub struct CatMutation;
 #[juniper::object(Context = ContextDB)]
 impl CatMutation {
     fn create(ctx: &ContextDB, input: CatInput) -> FieldResult<String> {
+        log::info!("CatMutation.create(input: {:?})", input);
         let doc = to_bson(&input)?
             .as_document()
             .ok_or("bson: couldn't convert to document")?
@@ -24,6 +25,7 @@ impl CatMutation {
     }
 
     fn create_simple(ctx: &ContextDB, name: String) -> FieldResult<String> {
+        log::info!("CatMutation.create_simple(name: {})", name);
         ctx.db
             .collection(CATS_COLLECTION)
             .insert_one(doc! {"name": name.clone()}, None)?;

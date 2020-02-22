@@ -8,6 +8,7 @@ pub struct CatQuery;
 impl CatQuery {
     /// List all Cats. Here you could return either Vec<Cat> or Vec<SipleCat> from the model.
     fn list_all(ctx: &ContextDB) -> FieldResult<Vec<Cat>> {
+        log::info!("CatQuery.list_all");
         Ok(ctx
             .db
             .collection(CATS_COLLECTION)

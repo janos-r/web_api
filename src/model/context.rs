@@ -11,6 +11,7 @@ pub fn context_factory(_: &mut Request) -> IronResult<ContextDB> {
     let client =
         Client::with_uri_str("mongodb://localhost:27017/").expect("Couldn't connect to the DB");
     let db = client.database("local");
+    log::info!("connected to DB: localhost:27017/local");
 
     Ok(ContextDB {
         db,

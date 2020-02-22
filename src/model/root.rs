@@ -1,6 +1,6 @@
 use super::context::ContextDB;
 use crate::cats::{cat_mutation::CatMutation, cat_query::CatQuery};
-use crate::user::user_service::UserService;
+use crate::user::user_query::UserQuery;
 
 /// The root query object of the schema
 pub struct Query;
@@ -14,8 +14,8 @@ impl Query {
         CatQuery
     }
 
-    fn users() -> UserService {
-        UserService
+    fn users() -> UserQuery {
+        UserQuery
     }
 }
 

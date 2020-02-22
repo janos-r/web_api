@@ -7,7 +7,7 @@ pub struct User {
     pub friend_ids: Vec<i32>,
 }
 
-/// This is a gql schema description: An example type that can use the context again, after it was first provided with its struct User data from list_all in the UserService type
+/// This is a gql schema description: An example type that can use the context again, after it was first provided with its struct User data from list_all in the UserQuery type
 // Assign ContextDB as the context type for User
 #[juniper::object(Context = ContextDB)]
 impl User {

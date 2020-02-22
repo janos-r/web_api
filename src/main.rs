@@ -1,8 +1,3 @@
-/*
-todo:
-add info logs to all major places
- */
-
 /*!
 There are two ways how to create a graphql schema in juniper.
 
@@ -24,7 +19,7 @@ impl User {...}
 ```
 The methods serve as resolvers. `&self` in the method's argument is the raw data from the db in form of the struct. They can have access to the context again if necessary. Examples are shown in the user and cats modules. But schema types don't have to use neither the context or `&self` - viz Metal.
 
-In my view, the impl serves 2 purposes in juniper. First, as in the impl User, it transforms the User data into a custom type, that will be displayed by juniper in the schema. And second, as in what I called a *_service, you can create a type for the root object and create the schema hierarchy that way.
+In my view, the impl serves 2 purposes in juniper. First, as in the impl User, it transforms the User data into a custom type, that will be displayed by juniper in the schema. And second, as in what I called a *Query / *Mutation, you can create a type for the root object and create the schema hierarchy that way.
 
 Note: In fact, I'm still a little surprised that you can write in such a juniper::object
 ```
@@ -37,7 +32,6 @@ Because this would normally not be legal rust code. This fn should return an obj
 
 use iron::prelude::*;
 use juniper_iron::{GraphQLHandler, PlaygroundHandler};
-use log::info;
 use logger::Logger;
 use mount::Mount;
 use std::env;
@@ -58,7 +52,7 @@ fn main() {
 
     // initialize the logger after loading the .env file
     env_logger::init();
-    info!("starting up");
+    log::info!("starting up");
 
     let mut mount = Mount::new();
 
